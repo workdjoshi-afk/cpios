@@ -1,0 +1,46 @@
+workflows:
+  ios-direct:
+    name: iOS Direct Build (No Web Build)
+
+    environment:
+      xcode: latest
+      node: latest
+
+    scripts:
+      - name: Install dependencies (optional)
+        script: npm install
+
+      - name: Verify dist exists
+        script: |
+          if [ ! -d "dist" ]; then
+            echo "dist folder missing ❌"
+            exit 1
+          fi
+
+      - name: Sync Capacitor (use existing dist)
+        script: npx cap sync ios
+
+      - name: Install CocoaPods
+        script: |
+          cd ios/App
+          pod install
+
+      - name: Build archive
+        script: |
+          cd ios/App
+          xcodebuild \
+            -workspace App.xcworkspace \
+            -scheme App \
+            -configuration Release \
+            -archivePath build/App.xcarchive \
+            archive
+
+      - name: Export IPA
+        script: |
+          xcodebuild -exportArchive \
+            -archivePath ios/App/build/App.xcarchive \
+            -exportOptionsPlist ios/App/ExportOptions.plist \
+            -exportPath build/ios
+
+    artifacts:
+      - build/ios/*.ipa
