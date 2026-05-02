@@ -22,20 +22,20 @@ workflows:
       - name: Sync Capacitor (use existing dist)
         script: npx cap sync ios
 
-      - name: Install CocoaPods
-        script: |
-          cd ios/App
-          pod install
+     - name: Install CocoaPods
+  script: |
+    cd ios
+    pod install
 
-      - name: Build archive
-        script: |
-          cd ios/App
-          xcodebuild \
-            -workspace App.xcworkspace \
-            -scheme App \
-            -configuration Release \
-            -archivePath build/App.xcarchive \
-            archive
+- name: Build archive
+  script: |
+    cd ios
+    xcodebuild \
+      -workspace App.xcworkspace \
+      -scheme App \
+      -configuration Release \
+      -archivePath build/App.xcarchive \
+      archive
 
       - name: Export IPA
         script: |
