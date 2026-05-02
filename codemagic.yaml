@@ -19,28 +19,28 @@ workflows:
             exit 1
           fi
 
-      - name: Sync Capacitor (use existing dist)
+      - name: Sync Capacitor
         script: npx cap sync ios
 
-     - name: Install CocoaPods
-  script: |
-    cd ios
-    pod install
+      - name: Install CocoaPods
+        script: |
+          cd ios
+          pod install
 
-- name: Build archive
-  script: |
-    cd ios
-    xcodebuild \
-      -workspace App.xcworkspace \
-      -scheme App \
-      -configuration Release \
-      -archivePath build/App.xcarchive \
-      archive
+      - name: Build archive
+        script: |
+          cd ios
+          xcodebuild \
+            -workspace App.xcworkspace \
+            -scheme App \
+            -configuration Release \
+            -archivePath build/App.xcarchive \
+            archive
 
       - name: Export IPA
         script: |
           xcodebuild -exportArchive \
-            -archivePath ios/App/build/App.xcarchive \
+            -archivePath ios/build/App.xcarchive \
             -exportOptionsPlist ios/App/ExportOptions.plist \
             -exportPath build/ios
 
