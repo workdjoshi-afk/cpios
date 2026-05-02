@@ -8,9 +8,9 @@ workflows:
 
     scripts:
       - name: Install dependencies
-  script: |
-    npm install
-    npm install @capacitor/cli @capacitor/core
+        script: |
+          npm install
+          npm install @capacitor/cli @capacitor/core
 
       - name: Verify dist exists
         script: |
